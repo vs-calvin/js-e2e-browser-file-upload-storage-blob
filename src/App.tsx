@@ -64,36 +64,32 @@ const DropDownHeader = styled("div")`
 `;
 
 const DropDownList = styled("ul")`
-  padding: 8px 0px;
+  padding: 0px 0px;
   width: 200px;
   position: absolute;
-  background-color: #f9f9f9;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-  margin: 0;
-  background: #ffffff;
-  border: 2px solid #e5e5e5;
-  box-sizing: border-box;
-  &:first-child {
-    padding-top: 0.8em;
-  }
+  margin-top: 40px;
+  margin-left: 10px;
 `;
 
 const ListItem = styled("li")`
-  padding: 0px 20px;
+  text-align: center;
+  background: #ffffff;
+  padding: 5px 20px;
+  margin-bottom: 5px;
+  box-shadow: 3px 3px 2px 0px rgba(0, 0, 0, 0.3);
   list-style: none;
   z-index: 1;
-  margin-bottom: 0.8em;
 `;
 
 const storageConfigured = isStorageConfigured();
-const options = [
+const containerNames = [
   "user-profiles",
-  "game-logo-images",
-  "game-title-images",
-  "game-tile-images",
+  "game-titles",
+  "game-hori-tiles",
+  "game-vert-tiles",
+  "game-sq-tiles",
 ];
-createContainers(options);
+createContainers(containerNames);
 
 const App = (): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
@@ -130,13 +126,15 @@ const App = (): JSX.Element => {
     let promises = filesSelected.map(async (file) => {
       await uploadFileToBlob(
         file,
-        selectedOption ? selectedOption : options[0]
+        selectedOption ? selectedOption : containerNames[0]
       );
     });
     await Promise.all(promises);
 
     setBlobList(
-      await getBlobsInContainer(selectedOption ? selectedOption : options[0])
+      await getBlobsInContainer(
+        selectedOption ? selectedOption : containerNames[0]
+      )
     );
 
     setUploading(false);
@@ -150,7 +148,7 @@ const App = (): JSX.Element => {
       <DropDownHeader onClick={toggling}>{selectedOption}</DropDownHeader>
       {isOpen && (
         <DropDownList>
-          {options.map((option) => (
+          {containerNames.map((option) => (
             <ListItem onClick={onOptionClicked(option)} key={Math.random()}>
               {option}
             </ListItem>
