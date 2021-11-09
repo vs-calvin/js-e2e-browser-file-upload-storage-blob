@@ -73,9 +73,9 @@ const ListItem = styled("li")`
 const storageConfigured = isStorageConfigured();
 const options = [
   "user-profiles",
-  "small-tile-images",
-  "big-tile-images",
-  "preview-images",
+  "game-logo-images",
+  "game-title-images",
+  "game-tile-images",
 ];
 createContainers(options);
 
