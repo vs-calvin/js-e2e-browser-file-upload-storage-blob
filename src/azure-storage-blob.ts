@@ -15,27 +15,6 @@ export const isStorageConfigured = () => {
 };
 // </snippet_isStorageConfigured>
 
-// <snippet_getBlobsInContainer>
-// return list of blobs in container to display
-const getBlobsInContainer = async (
-  containerClient: ContainerClient,
-  containerName: string
-) => {
-  const returnedBlobUrls: string[] = [];
-
-  // get list of blobs in container
-  // eslint-disable-next-line
-  for await (const blob of containerClient.listBlobsFlat()) {
-    // if image is public, just construct URL
-    returnedBlobUrls.push(
-      `https://${storageAccountName}.blob.core.windows.net/${containerName}/${blob.name}`
-    );
-  }
-
-  return returnedBlobUrls;
-};
-// </snippet_getBlobsInContainer>
-
 // <snippet_createBlobInContainer>
 const createBlobInContainer = async (
   containerClient: ContainerClient,
@@ -53,10 +32,7 @@ const createBlobInContainer = async (
 // </snippet_createBlobInContainer>
 
 // <snippet_uploadFileToBlob>
-const uploadFileToBlob = async (
-  file: File | null,
-  containerName: string
-): Promise<string[]> => {
+const uploadFileToBlob = async (file: File | null, containerName: string) => {
   if (!file) return [];
 
   // get BlobService = notice `?` is pulled out of sasToken - if created in Azure portal
@@ -73,13 +49,26 @@ const uploadFileToBlob = async (
 
   // upload file
   await createBlobInContainer(containerClient, file);
-
-  // get list of blobs in container
-  return getBlobsInContainer(containerClient, containerName);
 };
 // </snippet_uploadFileToBlob>
 
-export const getBlobsInContainer2 = async (containerName: string) => {
+export const createContainers = async (containerNames: string[]) => {
+  // get BlobService = notice `?` is pulled out of sasToken - if created in Azure portal
+  const blobService = new BlobServiceClient(
+    `https://${storageAccountName}.blob.core.windows.net/?${sasToken}`
+  );
+
+  let promises = containerNames.map(async (containerName) => {
+    const containerClient: ContainerClient =
+      blobService.getContainerClient(containerName);
+    await containerClient.createIfNotExists({
+      access: "container",
+    });
+  });
+  await Promise.all(promises);
+};
+
+export const getBlobsInContainer = async (containerName: string) => {
   const returnedBlobUrls: string[] = [];
 
   const blobService = new BlobServiceClient(
