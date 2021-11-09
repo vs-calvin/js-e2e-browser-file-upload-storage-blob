@@ -12,7 +12,6 @@ import uploadFileToBlob, {
 
 const Main = styled("div")`
   font-size: 1em;
-  border: 1px solid #e5e5e5;
   display: flex;
   flex-direction: column;
 `;
@@ -26,22 +25,26 @@ const Button = styled("button")`
   border: none;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
   background: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: sans-serif;
+`;
+
+const Label = styled("label")`
+  margin: 20px 0px 0px 0px;
 `;
 
 const InputLabel = styled("label")`
+  text-align: center;
   margin: 2px 10px;
-  padding: 5px 20px;
+  padding: 5px 0px;
   width: 200px;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
   background: #ffffff;
 `;
 
 const DropDownHeader = styled("div")`
+  text-align: center;
   margin: 2px 10px;
-  padding: 5px 20px;
+  padding: 5px 0px;
   width: 200px;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
   background: #ffffff;
@@ -130,6 +133,7 @@ const App = (): JSX.Element => {
   // display form
   const DisplayForm = () => (
     <Main>
+      <Label>Select Container</Label>
       <DropDownHeader onClick={toggling}>{selectedOption}</DropDownHeader>
       {isOpen && (
         <DropDownList>
@@ -140,6 +144,14 @@ const App = (): JSX.Element => {
           ))}
         </DropDownList>
       )}
+      <Label>Choose files</Label>
+      {filesSelected.length > 0 && (
+        <ul>
+          {filesSelected.map((file: File) => (
+            <li>{file.name}</li>
+          ))}
+        </ul>
+      )}
       <input
         type="file"
         multiple
@@ -148,10 +160,11 @@ const App = (): JSX.Element => {
         onChange={onFileChange}
         key={inputKey || ""}
       />
-      <InputLabel htmlFor="upload">Choose file</InputLabel>
+      <InputLabel htmlFor="upload">Browse ...</InputLabel>
 
+      <Label>Upload</Label>
       <Button type="submit" onClick={onFileUpload}>
-        Upload!
+        Start
       </Button>
     </Main>
   );
