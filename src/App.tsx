@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-//import Path from "path";
+import Path from "path";
 
 import uploadFileToBlob, {
   isStorageConfigured,
@@ -14,6 +14,19 @@ const Main = styled("div")`
   font-size: 1em;
   display: flex;
   flex-direction: column;
+`;
+
+const CardContainer = styled("div")`
+  font-size: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: stretch;
+  width: 100%;
+`;
+
+const Card = styled("div")`
+  padding: 10px;
+  height: 200px;
 `;
 
 const Button = styled("button")`
@@ -173,17 +186,23 @@ const App = (): JSX.Element => {
   const DisplayImagesFromContainer = () => (
     <Main>
       <h2>{selectedOption} items</h2>
-      <ul>
+      <CardContainer>
         {blobList.map((item) => {
           return (
-            <li key={item}>
-              <div>
-                {item}
-                <br />
-                <img src={item} alt={item} height="100" />
-              </div>
-            </li>
+            <Card>
+              <img src={item} alt={item} height="200" />
+              <br />
+              {Path.basename(item)}
+            </Card>
           );
+        })}
+      </CardContainer>
+      <br />
+      <br />
+      <br />
+      <ul>
+        {blobList.map((item) => {
+          return <li>{item}</li>;
         })}
       </ul>
     </Main>
