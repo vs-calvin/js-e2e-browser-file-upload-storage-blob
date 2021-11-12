@@ -84,7 +84,9 @@ const ListItem = styled("li")`
 const storageConfigured = isStorageConfigured();
 const containerNames = [
   "user-profiles",
+  "game-featured",
   "game-titles",
+  "game-logos",
   "game-hori-tiles",
   "game-vert-tiles",
   "game-sq-tiles",
