@@ -90,6 +90,7 @@ const containerNames = [
   "game-hori-tiles",
   "game-vert-tiles",
   "game-sq-tiles",
+  "game-news",
 ];
 createContainers(containerNames);
 
