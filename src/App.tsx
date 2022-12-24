@@ -1,5 +1,4 @@
 // ./src/App.tsx
-
 import React, { useState } from "react";
 import styled from "styled-components";
 import Path from "path";
